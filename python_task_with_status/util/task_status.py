@@ -11,7 +11,7 @@ class TaskStatus:
         self.engine = create_engine(jdbc_url)
         self.connection = self.engine.connect()
 
-    def started(self):
+    def running(self):
         """Set the TASK_EXECUTION's START_TIME """
         now = datetime.datetime.now()
         start_task_statement = text(
