@@ -1,6 +1,7 @@
 import os
 import sys
 from collections import defaultdict
+from string import split
 
 
 def get_cmd_arg(name):
@@ -44,7 +45,7 @@ def get_channel_destinations(channel_name):
              topic). If the channel is bound as a consumer, it could be bound to multiple destinations, and the
              destination names can be specified as comma-separated String values.
     """
-    return str(get_cmd_arg('spring.cloud.stream.bindings.{}.destination'.format(channel_name))).split(sep=',')
+    return split(str(get_cmd_arg('spring.cloud.stream.bindings.{}.destination'.format(channel_name))), sep=',')
 
 
 def get_kafka_brokers():
@@ -71,6 +72,7 @@ def get_env_info():
         get_channel_destinations('orders'), get_channel_destinations('hot.drink'),
         get_channel_destinations('cold.drink'))
     args = '\n   '.join(sys.argv)
-    envs = '\n  '.join(list(map(lambda k: '{}={}'.format(k, os.environ[k]), os.environ)))
+    envs = ''
+    #envs = '\n  '.join(list(map(lambda k: '{}={}'.format(k, os.environ[k]), os.environ)))
     return 'Properties:\n{0}\nChannels:\n{1}\nArguments:\n  {2}\n\nEnvironment:\n  {3}'.format(
         props, channels, args, envs)

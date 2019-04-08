@@ -7,14 +7,16 @@ print(get_env_info())
 
 Actuator.start(port=8080, info=get_env_info())
 
-consumer = KafkaConsumer('orders', bootstrap_servers=[get_kafka_brokers()],
-                         auto_offset_reset='earliest', enable_auto_commit=False)
+producer = KafkaProducer(bootstrap_servers=get_kafka_brokers())
+consumer = KafkaConsumer('orders', bootstrap_servers=get_kafka_brokers())
+
+#consumer = KafkaConsumer('orders', bootstrap_servers=[get_kafka_brokers()], auto_offset_reset='earliest', enable_auto_commit=False)
 
 # consumer = KafkaConsumer(get_channel_destinations('timestamp'), bootstrap_servers=[get_kafka_brokers()],
 #                          enable_auto_commit=True, client_id='python-client', max_poll_interval_ms=3000,
 #                          request_timeout_ms=4000)
 
-producer = KafkaProducer(bootstrap_servers=[get_kafka_brokers()])
+#producer = KafkaProducer(bootstrap_servers=[get_kafka_brokers()])
 
 
 def is_even(value):

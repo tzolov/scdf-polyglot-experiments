@@ -46,7 +46,9 @@ class Actuator:
         :param info: The text response to be returned by the /actuator/info endpoint.
         """
         try:
-            threading.Thread(target=Actuator(port, info).__run, daemon=True).start()
+            thread = threading.Thread(target=Actuator(port, info).__run)
+            thread.setDaemon(True)
+            thread.start()
             print('Actuator started!')
         except KeyboardInterrupt:
             sys.exit(0)
