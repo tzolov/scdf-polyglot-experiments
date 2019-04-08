@@ -3,14 +3,14 @@ from collections import defaultdict
 
 
 def get_cmd_arg(name):
-    """Extracts argument value by name.
+    """Extracts argument value by name. (@author: Chris Schaefer)
   
-    Assumes the exec (defulat) spring-cloud-deployer-k8s argumetn passing mode.
+    Assumes the exec (default) spring-cloud-deployer-k8s argument passing mode.
   
     Args:
       name: argument name.
     Returns:
-      value of the requested argumen.
+      value of the requested argument.
     """
     d = defaultdict(list)
     for k, v in ((k.lstrip('-'), v) for k, v in (a.split('=') for a in sys.argv[1:])):
