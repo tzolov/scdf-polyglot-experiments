@@ -30,7 +30,7 @@ class Barista:
         Actuator.start(port=8080, info=info)
 
         # Ensure the output topics exist.
-        self.__create_topics_if_missing([self.hot_drink_topic, self.cold_drink_topic])
+        self.__create_topics_if_missing([self.orders_topic, self.hot_drink_topic, self.cold_drink_topic])
 
         self.consumer = KafkaConsumer(self.orders_topic, bootstrap_servers=self.kafka_brokers)
         self.producer = KafkaProducer(bootstrap_servers=self.kafka_brokers)
