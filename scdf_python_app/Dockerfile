@@ -1,12 +1,9 @@
-FROM springcloud/openjdk:latest
-
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    python-pip && rm -rf /var/lib/apt/lists/*
+FROM python:3.7.3-slim
 
 RUN pip install kafka-python
 RUN pip install flask
 
 ADD /util/* /util/
-ADD python_app.py /
-ENTRYPOINT ["python","/python_app.py"]
+ADD barista_app.py /
+ENTRYPOINT ["python","/barista_app.py"]
 CMD []

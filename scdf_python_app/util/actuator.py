@@ -1,4 +1,4 @@
-import sys, os
+import sys
 import threading
 
 from flask import Flask, Response
@@ -18,6 +18,8 @@ class Actuator:
     def __init__(self, port=8080, info_content='Info'):
         self.http_app = Actuator.__create_http_app(info_content)
         self.port = port
+        print(info_content)
+        sys.stdout.flush()
 
     def __run(self):
         self.http_app.run(port=self.port, host='0.0.0.0')

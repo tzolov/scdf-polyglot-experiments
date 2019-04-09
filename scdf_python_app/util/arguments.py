@@ -1,7 +1,6 @@
 import os
 import sys
 from collections import defaultdict
-from string import split
 
 
 def get_cmd_arg(name):
@@ -32,7 +31,7 @@ def get_stream_name():
     return get_cmd_arg('spring.cloud.dataflow.stream.name')
 
 
-def get_channel_destinations(channel_name):
+def get_channel_topic(channel_name):
     """
     For given channel name returns the message broker destinations (e.g. Kafka topics or RabbitMQ exchanges).
 
@@ -45,7 +44,7 @@ def get_channel_destinations(channel_name):
              topic). If the channel is bound as a consumer, it could be bound to multiple destinations, and the
              destination names can be specified as comma-separated String values.
     """
-    return split(str(get_cmd_arg('spring.cloud.stream.bindings.{}.destination'.format(channel_name))), sep=',')
+    return get_cmd_arg('spring.cloud.stream.bindings.{}.destination'.format(channel_name))
 
 
 def get_kafka_brokers():
@@ -65,14 +64,13 @@ def get_application_group():
 
 
 def get_env_info():
-    props = '  stream name:{}\n  app name:{}\n  app guid:{}\n  app group:{}\n  kafka brokers:{}\n  kafka zk:{}\n'.format(
-        get_stream_name(), get_stream_app_label(), get_application_guid(), get_application_group(), get_kafka_brokers(),
-        get_kafka_zk_nodes())
-    channels = '  Inputs:\n    orders: {}\n  Outputs: \n    hot.drink:{}\n    cold.drink:{}\n'.format(
-        get_channel_destinations('orders'), get_channel_destinations('hot.drink'),
-        get_channel_destinations('cold.drink'))
+    props = '  stream-name={}\n  app-name={}\n  app-guid={}\n  app-group={}\n  kafka-brokers={}\n  ' \
+            'kafka-zk={}\n'.format(get_stream_name(), get_stream_app_label(), get_application_guid(),
+                                   get_application_group(), get_kafka_brokers(), get_kafka_zk_nodes())
+    channels = '  Inputs:\n    orders={}\n  Outputs: \n    hot.drink={}\n    cold.drink={}\n'.format(
+        get_channel_topic('orders'), get_channel_topic('hot.drink'), get_channel_topic('cold.drink'))
     args = '\n   '.join(sys.argv)
     envs = ''
-    #envs = '\n  '.join(list(map(lambda k: '{}={}'.format(k, os.environ[k]), os.environ)))
-    return 'Properties:\n{0}\nChannels:\n{1}\nArguments:\n  {2}\n\nEnvironment:\n  {3}'.format(
+    # envs = '\n  '.join(list(map(lambda k: '{}={}'.format(k, os.environ[k]), os.environ)))
+    return 'Properties\n{0}\nChannels\n{1}\nArguments\n  {2}\n\nEnvironment\n  {3}'.format(
         props, channels, args, envs)
